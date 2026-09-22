@@ -28,11 +28,8 @@ if [ -z "$TARGET_VERSION" ]; then
 
 	TARGET_VERSION=$(
 		gh api "repos/open-telemetry/opentelemetry-collector-releases/releases?per_page=100" \
-			--paginate \
-			--jq '.[] | select(.tag_name | startswith("cmd/builder/v")) | select(.prerelease == false) | .tag_name' \
-		| sed 's|cmd/builder/v||' \
-		| sort -V \
-		| tail -1
+			--jq '[.[] | select(.tag_name | startswith("cmd/builder/v")) | select(.prerelease == false)] | first | .tag_name' \
+		| sed 's|cmd/builder/v||'
 	)
 
 	[ -n "$TARGET_VERSION" ] || die "Could not determine latest OCB version"
