@@ -29,11 +29,9 @@ class Ocb < Formula
   end
 
   livecheck do
-    url :url
-    regex(/^cmd\/builder\/v(\d+(?:\.\d+)+)$/i)
-    strategy :github_releases do |page|
-      page.scan(regex).map { |match| match[0] }
-    end
+    url :stable
+    regex(%r{^cmd/builder/v(\d+(?:\.\d+)+)$}i)
+    strategy :github_releases
   end
 
   def install
