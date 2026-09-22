@@ -22,5 +22,12 @@ jobs:
       - name: Setup Homebrew
         if: runner.os == 'Linux'
         uses: Homebrew/actions/setup-homebrew@848c272c7bfe984a197bd4d16383f4c106ec61e6 # 2026.09.21.1
-      - run: brew install --build-from-source Formula/ocb.rb
-      - run: ocb version
+      - run: brew audit --strict --tap open-telemetry/tap
+      - run: |
+          for formula in Formula/*.rb; do
+            brew install --build-from-source "$formula"
+          done
+      - run: |
+          for formula in Formula/*.rb; do
+            brew test "$(basename "$formula" .rb)"
+          done
