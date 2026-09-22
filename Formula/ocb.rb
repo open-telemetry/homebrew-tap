@@ -42,6 +42,6 @@ class Ocb < Formula
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/ocb version")
+    assert_match version.to_s, shell_output("#{bin}/ocb version 2>&1")
   end
 end
