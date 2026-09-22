@@ -1,0 +1,33 @@
+name: Test
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+env:
+  HOMEBREW_DEVELOPER: 1
+jobs:
+  test:
+    strategy:
+      matrix:
+        os:
+          - macos-latest
+          - ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Setup Homebrew
+        if: runner.os == 'Linux'
+        uses: Homebrew/actions/setup-homebrew@848c272c7bfe984a197bd4d16383f4c106ec61e6 # 2026.09.21.1
+      - run: brew audit --strict --tap open-telemetry/tap
+      - run: |
+          for formula in Formula/*.rb; do
+            brew install --build-from-source "$formula"
+          done
+      - run: |
+          for formula in Formula/*.rb; do
+            brew test "$(basename "$formula" .rb)"
+          done
