@@ -20,7 +20,9 @@ jobs:
 
     steps:
       - name: Checkout tap
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - name: Run upgrade script
         env:
           GH_TOKEN: ${{ github.token }}
@@ -40,6 +42,7 @@ jobs:
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
           git checkout -b "$BRANCH"
           git add Formula/ocb.rb
           git commit -m "ocb: bump to v${VERSION}"
