@@ -27,8 +27,8 @@ if [ -z "$TARGET_VERSION" ]; then
 	info "No version specified — detecting latest OCB release..."
 
 	TARGET_VERSION=$(
-		gh api "repos/open-telemetry/opentelemetry-collector-releases/releases?per_page=100" \
-			--jq '[.[] | select(.tag_name | startswith("cmd/builder/v")) | select(.prerelease == false)] | first | .tag_name' \
+		gh api "repos/open-telemetry/opentelemetry-collector-releases/releases" \
+			--jq '[.[] | select(.tag_name | startswith("cmd/builder/v")) | select(.prerelease == false)] | sort_by(.created_at) | last | .tag_name' \
 		| sed 's|cmd/builder/v||'
 	)
 
