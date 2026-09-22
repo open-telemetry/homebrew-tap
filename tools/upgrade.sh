@@ -59,17 +59,11 @@ fi
 
 BASE_URL="https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/cmd%2Fbuilder%2Fv${TARGET_VERSION}"
 
-CHECKSUMS_FILE=$(mktemp)
-trap 'rm -f "$CHECKSUMS_FILE"' EXIT
-
 fetch_sha() {
-	grep " ocb_${TARGET_VERSION}_${1}$" "$CHECKSUMS_FILE" | awk '{print $1}' \
-		|| die "Checksum not found for ${1} v${TARGET_VERSION} in checksums.txt"
+	curl -fsSL "${BASE_URL}/ocb_${TARGET_VERSION}_${1}.sha256" || die "Failed to download checksum for ${1} v${TARGET_VERSION}"
 }
 
 info "Fetching checksums for v${TARGET_VERSION}"
-curl -fsSL "${BASE_URL}/checksums.txt" -o "$CHECKSUMS_FILE" \
-	|| die "Failed to download checksums.txt for v${TARGET_VERSION}"
 
 SHA_DARWIN_ARM64=$(fetch_sha "darwin_arm64")
 SHA_DARWIN_AMD64=$(fetch_sha "darwin_amd64")
