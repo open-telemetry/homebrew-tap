@@ -2,6 +2,26 @@
 
 A Homebrew tap for [OpenTelemetry](https://opentelemetry.io) tools.
 
+## Scope and goals
+
+This repository distributes OpenTelemetry command-line tools through [Homebrew](https://brew.sh), so they can be installed and upgraded with a single `brew` command.
+
+- **Pre-built binaries only.** Formulas install the official binaries published by the upstream OpenTelemetry projects on their GitHub releases. Nothing is built from source here, and the tools themselves are not developed in this repository.
+- **Upstream is the source of truth.** Formulas track upstream releases. Bug reports and feature requests for a tool belong in the tool's own repository; issues in this repo should concern the packaging (formulas, version bumps, install problems).
+- **Automated updates.** New upstream releases are picked up by a workflow that opens a pull request bumping the formula version and checksums (see [`tools/upgrade.sh`](tools/upgrade.sh)).
+- **Not in scope.** Packaging of the OpenTelemetry Collector distributions, SDKs, or other libraries. Only standalone command-line tools are packaged here.
+
+## Supported platforms
+
+Formulas are supported on both macOS and Linux (via [Homebrew on Linux](https://docs.brew.sh/Homebrew-on-Linux)), on both architectures:
+
+| OS    | arm64 | amd64 (x86_64) |
+| ----- | :---: | :------------: |
+| macOS |  yes  |      yes       |
+| Linux |  yes  |      yes       |
+
+Windows is not supported. New formulas are expected to cover the same set of platforms.
+
 ## Install
 
 ```sh
