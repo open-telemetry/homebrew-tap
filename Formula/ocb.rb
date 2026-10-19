@@ -40,6 +40,13 @@ class Ocb < Formula
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/ocb version 2>&1")
+    # Releases-repo-only patches (e.g. 0.163.1) are built from the collector core
+    # release (v0.163.0), whose binary reports `<major>.<minor>.0+dirty`. A patch
+    # coming from ocb itself reports its own version.
+    expected = [
+      "v#{version.major_minor}.0+dirty",
+      "v#{version}",
+    ].map { |v| Regexp.escape(v) }
+    assert_match(/\Aocb version (#{expected.join("|")})\n\z/, shell_output("#{bin}/ocb version 2>&1"))
   end
 end
