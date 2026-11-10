@@ -25,9 +25,9 @@ jobs:
       - run: brew audit --strict --tap open-telemetry/tap
       - run: |
           for formula in Formula/*.rb; do
-            brew install --build-from-source "$formula"
+            brew install --build-from-source "open-telemetry/tap/$(basename "$formula" .rb)"
           done
       - run: |
           for formula in Formula/*.rb; do
-            brew test "$(basename "$formula" .rb)"
+            brew test "open-telemetry/tap/$(basename "$formula" .rb)"
           done
